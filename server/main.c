@@ -273,7 +273,7 @@ void enter_loop(int listen_sock, int epollfd) {
                     
                     if (events & EPOLLOUT) {
                         printf("EPOLLOUT sock_fd: %d write\n",ptr->sock_fd);
-                        write_response(ptr, epollfd);
+                        //write_response(ptr, epollfd);
                     }
                 }
             }
