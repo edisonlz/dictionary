@@ -145,6 +145,10 @@ void handle_request(dict_epoll_data *ptr, char uri[]) {
                 sprintf(headers, json_headers, data_size);
                 header_length = strlen(headers);
             } else {
+
+                #ifdef DEBUG
+                    printf("gzipd %d", ptr->sock_fd);
+                #endif
                 sprintf(headers, gziped_json_headers, data_size + 10);
                 header_length = strlen(headers);
                 // copy gzip_header with http headers
@@ -273,7 +277,7 @@ void enter_loop(int listen_sock, int epollfd) {
                     
                     if (events & EPOLLOUT) {
                         printf("EPOLLOUT sock_fd: %d write\n",ptr->sock_fd);
-                        //write_response(ptr, epollfd);
+                        write_response(ptr, epollfd);
                     }
                 }
             }
