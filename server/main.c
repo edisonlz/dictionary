@@ -213,7 +213,7 @@ void process_request(dict_epoll_data *ptr, int epollfd) {
         }
         url_decode(uri, buf, MAXLINE);
         #ifdef DEBUG
-            printf("url_decode");
+            printf("url_decode\n");
         #endif
         handle_request(ptr, buf); // reuse buffer
     } else if (c == 0) {       // EOF, remote close conn
@@ -272,7 +272,7 @@ void enter_loop(int listen_sock, int epollfd) {
                     }
                     
                     if (events & EPOLLOUT) {
-                        printf("sendfile sock_fd: %d write\n",ptr->sock_fd);
+                        printf("EPOLLOUT sock_fd: %d write\n",ptr->sock_fd);
                         write_response(ptr, epollfd);
                     }
                 }
