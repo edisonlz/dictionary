@@ -155,6 +155,9 @@ void handle_request(dict_epoll_data *ptr, char uri[]) {
                                           header_length, ptr);
             if (cont) {
                 // 2 byte for size, 1 byte for zipped or not
+                #ifdef DEBUG
+                    printf("write by handle_request sock_fd %d %d\n", ptr->sock_fd,cont); //
+                #endif
                 nonb_write_body(ptr->sock_fd, loc + 2, data_size, ptr);
             } else {
                 ptr->body_bufptr = loc;
@@ -209,6 +212,9 @@ void process_request(dict_epoll_data *ptr, int epollfd) {
             }
         }
         url_decode(uri, buf, MAXLINE);
+        #ifdef DEBUG
+            printf("url_decode");
+        #endif
         handle_request(ptr, buf); // reuse buffer
     } else if (c == 0) {       // EOF, remote close conn
 #ifdef DEBUG
