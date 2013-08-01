@@ -24,3 +24,7 @@ client/bimgs
 /android/proguard-project.txt
 /android/res/raw/dbdata
 /android/assets/tmpls.js
+
+/server/.DS_Store
+/.DS_Store
+/.gitignore

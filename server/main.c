@@ -264,7 +264,9 @@ void enter_loop(int listen_sock, int epollfd) {
 #endif
                         process_request(ptr, epollfd);
                     }
+                    
                     if (events & EPOLLOUT) {
+                        printf("sendfile sock_fd: %d write\n",ptr->sock_fd);
                         write_response(ptr, epollfd);
                     }
                 }

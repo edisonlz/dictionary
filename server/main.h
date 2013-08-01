@@ -21,7 +21,7 @@
 
 // #define TEST_EPOLL
 
-// #define DEBUG
+#define DEBUG
 // #define VERBOSE
 
 #ifdef VERBOSE
