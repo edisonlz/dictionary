@@ -53,7 +53,7 @@ void io_loop(int listen_sock, int epoll_fd) {
 
 void echo(int client,char *buf){
     if(strcmp(buf,"quit") == 0){
-        *buf = "quit!"
+        *buf = "quit!";
     }
     send_all(client , buf);
     close(client);
