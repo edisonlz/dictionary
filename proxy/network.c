@@ -51,22 +51,23 @@ int open_nonb_listenfd(int port) {
 }
 
 
-void accept_incoming(int listen_sock, int epollfd){
+void accept_incoming(int listen_sock, epoll_event ev){
 
     struct sockaddr_in clientaddr;
     socklen_t clientlen = sizeof clientaddr;
     
-    client = accept(listener,  (struct sockaddr *) &clientaddr, &clientlen);
+    client = accept(listen_sock,  (struct sockaddr *) &clientaddr, &clientlen);
     if(client < 0){
         perror("accept");
-        continue;
+        return;
     }
 
     #ifdef DEBUG
         printf("accept %s:%d, sock_fd is %d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port), conn_sock);
     #endif
     
-    setnonblocking(client);
+    make_socket_non_blocking(client);
+    
     ev.events = EPOLLIN | EPOLLOUT | EPOLLET;
     ev.data.fd = client;
     if (epoll_ctl(kdpfd, EPOLL_CTL_ADD, client, &ev) < 0) {

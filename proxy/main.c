@@ -18,7 +18,7 @@ void io_loop(int listen_sock, int epoll_fd) {
             events = epoll_events[i].events;
             if (epoll_events[i].data.fd == listen_sock) {
                 
-                accept_incoming(listen_sock, epoll_fd);
+                accept_incoming(listen_sock, epoll_events[i]);
 
             }  else {
 
