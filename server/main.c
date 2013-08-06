@@ -92,7 +92,7 @@ int nonb_write_body(int fd, char* bufp, int nleft, dict_epoll_data *ptr) {
 void accept_incoming(int listen_sock, int epollfd) {
     struct sockaddr_in clientaddr;
     socklen_t clientlen = sizeof clientaddr;
-    int conn_sock = accept4(listen_sock, (SA *)&clientaddr, &clientlen, SOCK_NONBLOCK);
+    int conn_sock = accept(listen_sock, (SA *)&clientaddr, &clientlen);
     if (conn_sock <= 0) {
         if (errno == EAGAIN || errno == EWOULDBLOCK) {
             // printf("all connection\n"); //  we have done all
@@ -113,7 +113,7 @@ void accept_incoming(int listen_sock, int epollfd) {
         data->file_cnt = 0;
         data->static_fd = 0;
         ev.data.ptr = data;
-        ev.events = EPOLLIN | EPOLLOUT | EPOLLRDHUP| EPOLLET; //  read, edge triggered
+        ev.events = EPOLLIN | EPOLLOUT | EPOLLET; //  read, edge triggered
         if (epoll_ctl(epollfd, EPOLL_CTL_ADD, conn_sock, &ev) == -1) {
             perror("epoll_ctl: for read");
             exit(EXIT_FAILURE);
@@ -259,8 +259,7 @@ void enter_loop(int listen_sock, int epollfd) {
                 accept_incoming(listen_sock, epollfd);
             }  else {
                 dict_epoll_data *ptr = (dict_epoll_data*) epoll_events[i].data.ptr;
-                if ((events & EPOLLRDHUP) || (events & EPOLLERR)
-                    || (events & EPOLLRDHUP)) {
+                if ((events & EPOLLERR)) {
 #ifdef DEBUG
                     printf("error condiction, events: %d, fd: %d\n",
                            events, ptr->sock_fd);
