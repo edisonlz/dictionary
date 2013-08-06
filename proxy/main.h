@@ -25,7 +25,7 @@
 
 
 void io_loop(int listen_sock, int epollfd);
-void process_request(int epoll_fd);
+void process_request(int client,int epoll_fd);
 
 #endif
 

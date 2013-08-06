@@ -33,7 +33,7 @@ void io_loop(int listen_sock, int epoll_fd) {
                     if (events & EPOLLIN) {
 
                         printf("process request, sock_fd %d\n", epoll_fd);
-                        process_request(epoll_fd);
+                        process_request(epoll_events[i].data.fd, epoll_fd);
                         
                     }
                     
@@ -47,20 +47,20 @@ void io_loop(int listen_sock, int epoll_fd) {
 }
 
 
-void echo(int epoll_fd,char *buf){
-    send_all(epoll_fd , buf);
+void echo(int client,char *buf){
+    send_all(client , buf);
 }
 
-void process_request(int epoll_fd) {
+void process_request(int client, int epoll_fd) {
 
     ssize_t count;
     char buf[4096];
     
-    count = read_all(epoll_fd, buf);
+    count = read_all(client, buf);
 
     printf("read all %s\n",buf);
     
-    echo(epoll_fd, buf);
+    echo(client, buf);
 }
 
 
