@@ -10,16 +10,14 @@ int shart_child(int i){
     }else if (pid == 0){
         //in child
 
-#ifdef DEBUG
+
         printf("child pid %d %d c:%d\n", pid,i,getpid());
-#endif
         return i;
     }else{
         //in parent
 
-#ifdef DEBUG
+
         printf("parent fork child pid %d %d c:%d\n", pid,i,getpid());
-#endif
         return 0;
     }
 
@@ -34,9 +32,8 @@ void fork_processes(int number){
           }
     }
 
-#ifdef DEBUG
+
     printf("parent wait c:%d\n",getpid());
-#endif
     //in parent
     int status;
     pid_t  ex_pid = wait(&status);
