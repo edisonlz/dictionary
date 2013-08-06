@@ -305,7 +305,7 @@ int shart_child(int i){
 
 void fork_processes(int number){
     int child_id;
-    for(int i=0;i<number;i++){
+    for(int i=1;i<=number;i++){
           child_id = shart_child(i);
           if(child_id != 0){
               return;
