@@ -73,10 +73,10 @@ int main(int argc, char** argv) {
     fork_processes(2);
 
     //3. create epoll and register event
-    epoll_start(listen_sock);
+    int epoll_fd = epoll_start(listen_sock);
 
     //4.io loop for waiting network events.
-    io_loop(listen_sock, efd);
+    io_loop(listen_sock, epoll_fd);
 
     //no coming
     return 0;
