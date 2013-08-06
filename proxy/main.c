@@ -55,6 +55,8 @@ void echo(int client,char *buf){
 
     char *char_quit = "quit";
     int quit = strcmp(buf, char_quit);
+    printf("quit: %d \n",quit);
+     
     if(quit==0){
         *buf = "quit!";
     }
