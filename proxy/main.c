@@ -53,7 +53,8 @@ void io_loop(int listen_sock, int epoll_fd) {
 
 void echo(int client,char *buf){
 
-    int quit = strcmp(*buf,"quit");
+    char *char_quit = "quit";
+    int quit = strcmp(buf, char_quit);
     if(quit==0){
         *buf = "quit!";
     }
