@@ -297,7 +297,7 @@ int shart_child(int i){
         return i;
     }else{
         //in parent
-        printf("parent pid %d %d\n", pid,i);
+        printf("parent fork child pid %d %d\n", pid,i);
         return 0;
     }
 
