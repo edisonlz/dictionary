@@ -292,12 +292,12 @@ int shart_child(int i){
          return 0;
     }else if (pid == 0){
         //in child
-        #ifdef DEBUG
-            printf("child pid %s", pid);
-        #endif
+
+        printf("child pid %d %d", pid,i);
         return i;
     }else{
         //in parent
+        printf("parent pid %d %d", pid,i);
         return 0;
     }
 
@@ -312,9 +312,8 @@ void fork_processes(int number){
           }
     }
 
-    #ifdef DEBUG
-        printf("parent wait");
-    #endif
+
+    printf("parent wait");
     //in parent
     int status;
     pid_t  ex_pid = wait(&status);
