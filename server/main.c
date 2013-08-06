@@ -289,20 +289,22 @@ pid_t shart_child(int i){
     pid_t pid;
     if( (pid = fork()) < 0 ){
          perror("fork err");
+         return 0;
     }else if (pid == 0){
         //in child
         return pid;
     }else{
         //in parent
-        return NULL;
+        return 0;
     }
+
 }
 
 void fork_processes(int number){
     pid_t pid;
     for(int i=0;i<number;i++){
           pid = shart_child(i);
-          if(pid!=NULL){
+          if(pid!=0){
               return;
           }
     }
@@ -322,7 +324,7 @@ int main(int argc, char** argv) {
     //fork load balance server
     fork_processes(2);
     
-    efd = epoll_create1(0);
+    efd = epoll_create(100);
     if (efd == -1) { perror("epoll_create"); exit(EXIT_FAILURE); }
 
     ev.events = EPOLLIN;        // read
