@@ -31,18 +31,14 @@ void io_loop(int listen_sock, int epoll_fd) {
                     
                 } else {
                     if (events & EPOLLIN) {
-                    
-                        #ifdef DEBUG
-                           printf("process request, sock_fd %d\n", epoll_fd);
-                        #endif
 
+                        printf("process request, sock_fd %d\n", epoll_fd);
                         process_request(epoll_fd);
+                        
                     }
                     
                     if (events & EPOLLOUT) {
-                            #ifdef DEBUG
-                                printf("EPOLLOUT sock_fd: %d write\n",epoll_fd);
-                            #endif
+                         printf("EPOLLOUT sock_fd: %d write\n",epoll_fd);
                     }
                 }
             }
@@ -61,6 +57,8 @@ void process_request(int epoll_fd) {
     char buf[4096];
     
     count = read_all(epoll_fd, buf);
+
+    printf("read all %s\n",buf);
     
     echo(epoll_fd, buf);
 }
