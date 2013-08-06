@@ -285,7 +285,7 @@ void enter_loop(int listen_sock, int epollfd) {
 }
 
 
-pid_t shart_child(i){
+pid_t shart_child(int i){
 
     pid_t pid;
     if( (pid = fork()) < 0 ){
