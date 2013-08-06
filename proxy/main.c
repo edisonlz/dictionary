@@ -12,13 +12,13 @@ void io_loop(int listen_sock, int epoll_fd) {
     
     while(1) {
     
-        nfds = epoll_wait(epollfd, epoll_events, MAX_EVENTS, -1);
+        nfds = epoll_wait(epoll_fd, epoll_events, MAX_EVENTS, -1);
 
         for (int i = 0; i < nfds; ++ i) {
             events = epoll_events[i].events;
             if (epoll_events[i].data.fd == listen_sock) {
                 
-                accept_incoming(listen_sock, epoll_events[i]);
+                accept_incoming(listen_sock, epoll_fd);
 
             }  else {
 

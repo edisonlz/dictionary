@@ -57,7 +57,7 @@ void accept_incoming(int listen_sock, int epoll_fd){
     struct sockaddr_in clientaddr;
     socklen_t clientlen = sizeof clientaddr;
     
-    client = accept(listen_sock,  (struct sockaddr *) &clientaddr, &clientlen);
+    int client = accept(listen_sock,  (struct sockaddr *) &clientaddr, &clientlen);
     if(client < 0){
         perror("accept");
         return;
@@ -71,7 +71,7 @@ void accept_incoming(int listen_sock, int epoll_fd){
     
     ev.events = EPOLLIN | EPOLLOUT | EPOLLET;
     ev.data.fd = client;
-    if (epoll_ctl(kdpfd, EPOLL_CTL_ADD, client, &ev) < 0) {
+    if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, client, &ev) < 0) {
         fprintf(stderr, "epoll set insertion error: fd=%d", client);
         exit(EXIT_FAILURE);
     }
