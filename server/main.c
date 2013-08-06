@@ -295,7 +295,7 @@ pid_t shart_child(i){
         return pid;
     }else{
         //in parent
-        return null;
+        return NULL;
     }
 }
 
@@ -303,7 +303,7 @@ void fork_processes(int number){
     pid_t pid;
     for(int i=0;i<number;i++){
           pid = shart_child(i);
-          if(pid!=null){
+          if(pid!=NULL){
               return;
           }
     }
