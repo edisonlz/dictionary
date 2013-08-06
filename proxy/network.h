@@ -27,8 +27,9 @@
 // Simplifies calls to bind(), connect(), and accept()
 typedef struct sockaddr SA;
 
+int epoll_start(int listen_sock);
 void make_socket_non_blocking(int sfd);
-int open_nonb_listenfd(int port);
+int open_non_blocking_socket(int port);
 
 void accept_incoming(int listen_sock, int epoll_fd);
 void close_and_clean(int epollfd);

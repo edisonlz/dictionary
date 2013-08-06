@@ -16,7 +16,7 @@ void make_socket_non_blocking(int sfd) {
 }
 
 
-int open_nonb_listenfd(int port) {
+int open_non_blocking_socket(int port) {
     int listenfd, optval=1;
     struct sockaddr_in serveraddr;
 
@@ -112,3 +112,21 @@ int send_all(int fd,char *buf){
    return n;
 }
 
+
+int epoll_start(int listen_sock){
+
+    int efd = epoll_create(1000);
+    if (efd == -1) {
+        perror("epoll_create");
+        exit(EXIT_FAILURE);
+     }
+
+    struct epoll_event ev;
+    ev.events = EPOLLIN;
+    ev.data.fd = listen_sock;
+    
+    if (epoll_ctl(efd, EPOLL_CTL_ADD, listen_sock, &ev) == -1) {
+        perror("epoll_ctl: listen_sock");
+        exit(EXIT_FAILURE);
+    }
+}

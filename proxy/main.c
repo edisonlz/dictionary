@@ -66,27 +66,19 @@ void process_request(int client, int epoll_fd) {
 
 int main(int argc, char** argv) {
 
-    struct epoll_event ev;
-    int listen_sock, efd;
+    //1.listen socket on port
+    int listen_sock = open_non_blocking_socket(9090);
 
-    listen_sock = open_nonb_listenfd(9090);
-
-    //fork load balance server
+    //2.fork load balance server
     fork_processes(2);
-    
-    efd = epoll_create(100);
-    if (efd == -1) {
-        perror("epoll_create");
-        exit(EXIT_FAILURE);
-     }
 
-    ev.events = EPOLLIN;        // read
-    ev.data.fd = listen_sock;
-    if (epoll_ctl(efd, EPOLL_CTL_ADD, listen_sock, &ev) == -1) {
-        perror("epoll_ctl: listen_sock");
-        exit(EXIT_FAILURE);
-    }
-    
+    //3. create epoll and register event
+    epoll_start(listen_sock);
+
+    //4.io loop for waiting network events.
     io_loop(listen_sock, efd);
+
+    //no coming
     return 0;
 }
+
