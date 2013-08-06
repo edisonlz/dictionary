@@ -89,6 +89,7 @@ int read_all(int fd,char *buf){
     while ((count = read(fd, buf + n, sizeof buf)) > 0) {
         n += count;
     }
+    return n;
 }
 
 
@@ -108,5 +109,5 @@ int send_all(int fd,char *buf){
         }
         n -= nwrite;
     }
-   return 0;
+   return n;
 }

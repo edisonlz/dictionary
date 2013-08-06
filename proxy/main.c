@@ -60,9 +60,9 @@ void process_request(int epoll_fd) {
     ssize_t count;
     char buf[4096];
     
-    count = read_all(epoll_fd, &buf);
+    count = read_all(epoll_fd, buf);
     
-    echo(epoll_fd, &buf);
+    echo(epoll_fd, buf);
 }
 
 
