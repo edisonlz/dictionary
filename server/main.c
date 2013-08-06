@@ -2,7 +2,6 @@
 #include "main.h"
 #include "search.h"
 #include "network.h"
-
 #include "static.h"
 
 #define GZIP_MAGIC 0x8b1f
@@ -147,7 +146,7 @@ void handle_request(dict_epoll_data *ptr, char uri[]) {
             } else {
 
                 #ifdef DEBUG
-                    printf("gzipd %d", ptr->sock_fd);
+                    printf("gzipd %d\n", ptr->sock_fd);
                 #endif
                 sprintf(headers, gziped_json_headers, data_size + 10);
                 header_length = strlen(headers);
@@ -160,7 +159,7 @@ void handle_request(dict_epoll_data *ptr, char uri[]) {
             if (cont) {
                 // 2 byte for size, 1 byte for zipped or not
                 #ifdef DEBUG
-                    printf("write by handle_request sock_fd %d %d\n", ptr->sock_fd,cont); //
+                    printf("write by handle_request sock_fd %d %d\n", ptr->sock_fd,cont);
                 #endif
                 nonb_write_body(ptr->sock_fd, loc + 2, data_size, ptr);
             } else {
@@ -285,11 +284,45 @@ void enter_loop(int listen_sock, int epollfd) {
     }
 }
 
+
+pid_t shart_child(i){
+
+    pid_t pid;
+    if( (pid = fork()) < 0 ){
+         perror("fork err");
+    }else if (pid == 0){
+        //in child
+        return pid;
+    }else{
+        //in parent
+        return null;
+    }
+}
+
+void fork_processes(int number){
+    pid_t pid;
+    for(int i=0;i<number;i++){
+          pid = shart_child(i);
+          if(pid!=null){
+              return;
+          }
+    }
+    //in parent
+    int status;
+    pid_t  ex_pid = wait(&status);
+    perror("pid return");
+}
+
+
 int main(int argc, char** argv) {
     struct epoll_event ev;
     int listen_sock, efd;
 
     listen_sock = open_nonb_listenfd(9090);
+
+    //fork load balance server
+    fork_processes(2);
+    
     efd = epoll_create1(0);
     if (efd == -1) { perror("epoll_create"); exit(EXIT_FAILURE); }
 

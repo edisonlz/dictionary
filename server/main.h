@@ -14,6 +14,7 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 #define MAXLINE 512             // max length of a line
 #define MAX_EVENTS 256
