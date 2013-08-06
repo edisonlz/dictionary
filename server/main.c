@@ -293,11 +293,11 @@ int shart_child(int i){
     }else if (pid == 0){
         //in child
 
-        printf("child pid %d %d", pid,i);
+        printf("child pid %d %d\n", pid,i);
         return i;
     }else{
         //in parent
-        printf("parent pid %d %d", pid,i);
+        printf("parent pid %d %d\n", pid,i);
         return 0;
     }
 
@@ -313,11 +313,11 @@ void fork_processes(int number){
     }
 
 
-    printf("parent wait");
+    printf("parent wait\n");
     //in parent
     int status;
     pid_t  ex_pid = wait(&status);
-    perror("pid return");
+    perror("pid return\n");
 }
 
 
