@@ -284,7 +284,7 @@ void enter_loop(int listen_sock, int epollfd) {
 }
 
 
-pid_t shart_child(int i){
+int shart_child(int i){
 
     pid_t pid;
     if( (pid = fork()) < 0 ){
@@ -292,7 +292,10 @@ pid_t shart_child(int i){
          return 0;
     }else if (pid == 0){
         //in child
-        return pid;
+        #ifdef DEBUG
+            printf("child pid %s", pid);
+        #endif
+        return i;
     }else{
         //in parent
         return 0;
@@ -301,13 +304,17 @@ pid_t shart_child(int i){
 }
 
 void fork_processes(int number){
-    pid_t pid;
+    int child_id;
     for(int i=0;i<number;i++){
-          pid = shart_child(i);
-          if(pid!=0){
+          child_id = shart_child(i);
+          if(child_id != 0){
               return;
           }
     }
+
+    #ifdef DEBUG
+        printf("parent wait");
+    #endif
     //in parent
     int status;
     pid_t  ex_pid = wait(&status);
