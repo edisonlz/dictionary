@@ -2,6 +2,10 @@
 #include "network.h"
 #include "process.h"
 
+/* for select */
+#include <sys/select.h>
+fd_set readset, writeset, exset;
+
 
 
 void io_loop(int listen_sock, int epoll_fd) {
@@ -48,8 +52,15 @@ void io_loop(int listen_sock, int epoll_fd) {
 
 
 void echo(int client,char *buf){
+    if(strcmp(buf,"quit") == 0){
+        *buf = "quit!"
+    }
     send_all(client , buf);
+    close(client);
 }
+
+
+
 
 void process_request(int client, int epoll_fd) {
 
@@ -62,6 +73,8 @@ void process_request(int client, int epoll_fd) {
     
     echo(client, buf);
 }
+
+
 
 
 int main(int argc, char** argv) {
