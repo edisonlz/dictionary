@@ -30,7 +30,7 @@ typedef struct sockaddr SA;
 void make_socket_non_blocking(int sfd);
 int open_nonb_listenfd(int port);
 
-void accept_incoming(int listen_sock, int epollfd);
+void accept_incoming(int listen_sock, int epoll_fd);
 void close_and_clean(int epollfd);
 
 int read_all(int fd,char *buf);

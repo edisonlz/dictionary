@@ -51,8 +51,9 @@ int open_nonb_listenfd(int port) {
 }
 
 
-void accept_incoming(int listen_sock, epoll_event ev){
+void accept_incoming(int listen_sock, int epoll_fd){
 
+    struct epoll_event ev;
     struct sockaddr_in clientaddr;
     socklen_t clientlen = sizeof clientaddr;
     
