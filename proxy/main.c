@@ -4,7 +4,7 @@
 
 
 
-void io_loop(int listen_sock, int epollfd) {
+void io_loop(int listen_sock, int epoll_fd) {
 
     int nfds;
     uint32_t events;
@@ -17,29 +17,31 @@ void io_loop(int listen_sock, int epollfd) {
         for (int i = 0; i < nfds; ++ i) {
             events = epoll_events[i].events;
             if (epoll_events[i].data.fd == listen_sock) {
-                accept_incoming(listen_sock, epollfd);
+                
+                accept_incoming(listen_sock, epoll_fd);
+
             }  else {
 
                 if ((events & EPOLLERR)) {
                         #ifdef DEBUG
-                           printf("error condiction, events: %d, fd: %d\n", events, ptr->sock_fd);
+                           printf("error condiction, events: %d, fd: %d\n", events, epoll_fd);
                         #endif
                     
-                        close_and_clean(epollfd);
+                        close_and_clean(epoll_fd);
                     
                 } else {
                     if (events & EPOLLIN) {
                     
                         #ifdef DEBUG
-                           printf("process request, sock_fd %d\n", ptr->sock_fd);
+                           printf("process request, sock_fd %d\n", epoll_fd);
                         #endif
 
-                        process_request(epollfd);
+                        process_request(epoll_fd);
                     }
                     
                     if (events & EPOLLOUT) {
                             #ifdef DEBUG
-                                printf("EPOLLOUT sock_fd: %d write\n",ptr->sock_fd);
+                                printf("EPOLLOUT sock_fd: %d write\n",epoll_fd);
                             #endif
                     }
                 }
