@@ -26,7 +26,7 @@ void handle_tcp(int client,int remote){
                 }
                 
                  /* Process all of the fds that are still set in readset */
-                for (i=0; i < 2; i++) {
+                for (int i=0; i < 2; i++) {
                     if (FD_ISSET(client, &readset)) {
                         read_all(client, buf);
                         send_all(remote, buf);
@@ -86,28 +86,16 @@ void io_loop(int listen_sock, int epoll_fd) {
 
 
 
-int connect_remove(char *server,int port){
+int connect_remote(char *server,int port){
 
     int remote = socket(AF_INET, SOCK_STREAM, 0);
-
-    const char hostname[] = "10.103.13.18";
-    struct hostent *h;
-    h = gethostbyname(hostname);
-    if (!h) {
-        fprintf(stderr, "Couldn't lookup %s: %s", hostname, hstrerror(h_errno));
-        return 1;
-    }
-    if (h->h_addrtype != AF_INET) {
-        fprintf(stderr, "No ipv6 support, sorry.");
-        return 1;
-    }
 
     //Co
     struct sockaddr_in sin;
 
     sin.sin_family = AF_INET;
     sin.sin_port = htons(9090);
-    sin.sin_addr = *(struct in_addr*)h->h_addr;
+    sin.sin_addr = "10.103.13.18";
     if (connect(remote, (struct sockaddr*) &sin, sizeof(sin))) {
         perror("connect");
         close(remote);
@@ -126,7 +114,7 @@ void process_request(int client, int epoll_fd) {
     
     printf("read all %s\n",buf);
 
-    int remove = connect_remove("",80);
+    int remote = connect_remote("",80);
     
     handle_tcp(client,remote);
 }
