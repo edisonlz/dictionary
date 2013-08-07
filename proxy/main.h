@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <conio.h>
 
 #define MAXLINE 512
 #define MAX_EVENTS 256

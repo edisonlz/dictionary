@@ -121,11 +121,20 @@ int connect_remote(char *server,int port){
 void process_request(int client, int epoll_fd) {
 
     ssize_t count;
-    char server[64];
-    count = read_all(client, server);
-    char port[10];
-    count = read_all(client, port);
+    char buf[64];
+    count = read_all(client, buf);
 
+    const char * split = ":";
+    
+    char *server;
+    int port;
+    
+    char * p;
+    p = strtok (buf, split);
+    server = p;
+    p = strtok(NULL, split);
+    port = atoi(*p);
+    
     printf("server:%s,port:%s",server,port);
     
     int remote = connect_remote(server, (int)*port);
