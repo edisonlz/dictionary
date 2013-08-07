@@ -32,7 +32,6 @@ void handle_tcp(int client,int remote){
                     read_all(client, buf);
                     printf("client:%d,remore:%d, %s\n", client,remote,buf);
                     send_all(remote, buf);
-                    free(buf);
                 }
                 
                 if(FD_ISSET(remote, &readset)){
@@ -40,7 +39,6 @@ void handle_tcp(int client,int remote){
                     read_all(remote, buf);
                     printf("remore:%d,client:%d, %s\n", remote, client, buf);
                     send_all(client, buf);
-                    free(buf);
                 }
 
         }
