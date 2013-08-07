@@ -128,7 +128,7 @@ void process_request(int client, int epoll_fd) {
 
     printf("server:%s,port:%s",server,port);
     
-    int remote = connect_remote(buf, (int)*port);
+    int remote = connect_remote(server, (int)*port);
     
     handle_tcp(client , remote);
 }
