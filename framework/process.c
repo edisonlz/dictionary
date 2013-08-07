@@ -37,6 +37,7 @@ void fork_processes(int number){
     //in parent
     int status;
     pid_t  ex_pid = wait(&status);
-    perror("pid return\n");
+    
+    printf("exit pid:%d status:%d\n", ex_pid, status);
 }
 
