@@ -123,8 +123,8 @@ void process_request(int client, int epoll_fd) {
 
     const char * split = ":";
     
-    char *server;
-    char *sport;
+    char *server=NULL;
+    char *sport=NULL;
 
     sscanf(buf,"%[^:]:%[^\n]",server,sport);
     int port = atoi(sport);
