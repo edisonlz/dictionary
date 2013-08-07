@@ -121,13 +121,18 @@ void process_request(int client, int epoll_fd) {
     char buf[64];
     count = read_all(client, buf);
 
-    //const char * split = ":";
+    const char * split = ":";
     
-    char *server=NULL;
-    char *sport=NULL;
+    char *server;
+    int port;
 
-    sscanf(buf,"%[^:]:%[^\n]",server,sport);
-    int port = atoi(sport);
+    //sscanf(buf,"%[^:]:%[^\n]",key,value);
+
+    char * p;
+    p = strtok (buf, split);
+    server = p;
+    p = strtok(NULL, split);
+    port = atoi(p);
     
     printf("server:%s,port:%d\n",server,port);
     
