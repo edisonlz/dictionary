@@ -105,7 +105,7 @@ int connect_remote(char *server,int port){
     
 
     sin.sin_family = AF_INET;
-    sin.sin_port = htons(9090);
+    sin.sin_port = htons(80);
     inet_pton(AF_INET,"10.103.13.18",&sin.sin_addr);
     
     if (connect(remote, (struct sockaddr*) &sin, sizeof(sin))) {
