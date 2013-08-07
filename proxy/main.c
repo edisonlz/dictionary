@@ -127,7 +127,11 @@ void process_request(int client, int epoll_fd) {
     
     printf("read all %s\n",buf);
 
-    int remote = connect_remote("",80);
+    char port[10];
+    
+    count = read_all(client, port);
+
+    int remote = connect_remote(buf, (int)*port);
     
     handle_tcp(client , remote);
 }
