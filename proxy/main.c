@@ -20,7 +20,7 @@ void handle_tcp(int client,int remote){
 
         while(1){
         
-                if (select(client+1, &readset, NULL, NULL, NULL) < 0) {
+                if (select(2, &readset, NULL, NULL, NULL) < 0) {
                     perror("select");
                     return;
                 }
@@ -34,7 +34,7 @@ void handle_tcp(int client,int remote){
                     send_all(remote, buf);
                 }
                 
-                if(FD_ISSET(remote, &readset)){
+                if (FD_ISSET(remote, &readset)) {
                     char buf[4096];
                     read_all(remote, buf);
                     printf("remore:%d,client:%d, %s\n", remote, client, buf);
@@ -106,7 +106,7 @@ int connect_remote(char *server,int port){
     inet_pton(AF_INET,"10.103.13.18",&sin.sin_addr);
     
     if (connect(remote, (struct sockaddr*) &sin, sizeof(sin))) {
-        perror("connect");
+        perror("connect remote");
         close(remote);
         return 1;
     }
@@ -125,7 +125,7 @@ void process_request(int client, int epoll_fd) {
 
     int remote = connect_remote("",80);
     
-    handle_tcp(client,remote);
+    handle_tcp(client , remote);
 }
 
 
