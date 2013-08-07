@@ -95,7 +95,7 @@ void io_loop(int listen_sock, int epoll_fd) {
 int connect_remote(char *server,int port){
 
     int remote = socket(AF_INET, SOCK_STREAM, 0);
-    make_socket_non_blocking(remote);
+
 
     struct sockaddr_in sin;
     
@@ -109,6 +109,8 @@ int connect_remote(char *server,int port){
         close(remote);
         return 1;
     }
+
+    make_socket_non_blocking(remote);
 
     return remote;
 }
