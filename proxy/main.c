@@ -11,7 +11,6 @@ void handle_tcp(int client,int remote){
 
         fd_set readset;
 
-
         while(1){
 
                 FD_ZERO(&readset);
@@ -19,16 +18,14 @@ void handle_tcp(int client,int remote){
                 FD_SET(remote, &readset);
 
                 int maxfd = client > remote ? client+1 : remote+1;
-
                 int fd_num = select(maxfd, &readset, NULL, NULL, NULL);
-
                 printf("fd_num:%d \n",fd_num);
                 
                 if (fd_num < 0) {
                     perror("select");
                     return;
                 }
-                
+                 
                 /* Process all of the fds that are still set in readset */
                 
                 if (FD_ISSET(client, &readset)) {
@@ -127,13 +124,10 @@ void process_request(int client, int epoll_fd) {
     const char * split = ":";
     
     char *server;
-    int port;
-    
-    char * p;
-    p = strtok (buf, split);
-    server = p;
-    p = strtok(NULL, split);
-    port = atoi(p);
+    char *sport;
+
+    sscanf(buf,"%[^:]:%[^\n]",server,sport);
+    int port = atoi(sport);
     
     printf("server:%s,port:%d\n",server,port);
     
