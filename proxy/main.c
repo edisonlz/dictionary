@@ -33,7 +33,7 @@ void handle_tcp(int client,int remote){
                 if (FD_ISSET(client, &readset)) {
                     char buf[4096];
                     read_all(client, buf);
-                    printf("client:%d,remore:%d, %s\n", client,remote,buf);
+                    printf("maxfd:%d,client:%d,remore:%d, %s\n", maxfd,client,remote,buf);
                     send_all(remote, buf);
                 }
                 
@@ -42,6 +42,12 @@ void handle_tcp(int client,int remote){
                     read_all(remote, buf);
                     printf("remore:%d,client:%d, %s\n", remote, client, buf);
                     send_all(client, buf);
+                }
+                
+                if(1){
+                    char buf[4096];
+                    read_all(remote, buf);
+                    printf("%s\n", buf);
                 }
 
         }
