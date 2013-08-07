@@ -20,8 +20,11 @@ void handle_tcp(int client,int remote){
 
 
                 int maxfd = client > remote ? client : remote;
-                
-                if (select(maxfd+1, &readset, NULL, NULL, NULL) < 0) {
+
+                int fd_num = select(maxfd+1, &readset, NULL, NULL, NULL);
+
+                printf("fd_num:%d \n",fd_num);
+                if (fd_num < 0) {
                     perror("select");
                     return;
                 }
