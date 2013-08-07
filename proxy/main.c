@@ -20,7 +20,7 @@ void handle_tcp(int client,int remote){
 
                 int maxfd = client > remote ? client+1 : remote+1;
 
-                int fd_num = select(maxfd, &readset, &readset, NULL, NULL);
+                int fd_num = select(maxfd, &readset, NULL, NULL, NULL);
 
                 printf("fd_num:%d \n",fd_num);
                 
