@@ -5,29 +5,37 @@
 /* for select */
 #include <sys/select.h>
 
-fd_set readset;
+
 
 void handle_tcp(int client,int remote){
+
+        fd_set readset;
+
+        FD_ZERO(&readset);
+        
         FD_SET(client, &readset);
-        FD_SET(client, &remote);
+        FD_SET(remote, &readset);
+        
+        char buf[4096];
+        
         while(1){
         
                 if (select(client+1, &readset, NULL, NULL, NULL) < 0) {
                     perror("select");
                     return;
                 }
-
-//            r, w, e = select.select(fdset, [], [])
-//            print r
-//            if sock in r:
-//                d = sock.recv(4096)
-//                print "source", d
-//                if remote.send(d) <= 0: break
-//            if remote in r:
-//                d = remote.recv(4096)
-//                print "remote", d
-//                if sock.send(d) <= 0: break
-
+                
+                 /* Process all of the fds that are still set in readset */
+                for (i=0; i < 2; i++) {
+                    if (FD_ISSET(client, &readset)) {
+                        read_all(client, buf);
+                        send_all(remote, buf);
+                    }
+                    else if(FD_ISSET(remote, &readset)){
+                        read_all(remote, buf);
+                        send_all(client, buf);
+                    }
+                }
         }
 }
 
@@ -76,23 +84,37 @@ void io_loop(int listen_sock, int epoll_fd) {
 }
 
 
-void echo(int client,char *buf){
 
-    char *char_quit = "quit";
-    int quit = strcmp(buf, char_quit);
-    printf("quit: %d \n",quit);
-     
-    if(quit==0){
-        *buf = "quit!";
+
+int connect_remove(char *server,int port){
+
+    int remote = socket(AF_INET, SOCK_STREAM, 0);
+
+    const char hostname[] = "10.103.13.18";
+    struct hostent *h;
+    h = gethostbyname(hostname);
+    if (!h) {
+        fprintf(stderr, "Couldn't lookup %s: %s", hostname, hstrerror(h_errno));
+        return 1;
     }
-    send_all(client , buf);
-    if(quit==0){
-        close(client);
+    if (h->h_addrtype != AF_INET) {
+        fprintf(stderr, "No ipv6 support, sorry.");
+        return 1;
     }
 
+    //Co
+    struct sockaddr_in sin;
+
+    sin.sin_family = AF_INET;
+    sin.sin_port = htons(9090);
+    sin.sin_addr = *(struct in_addr*)h->h_addr;
+    if (connect(remote, (struct sockaddr*) &sin, sizeof(sin))) {
+        perror("connect");
+        close(remote);
+        return 1;
+    }
+    return remote;
 }
-
-
 
 
 void process_request(int client, int epoll_fd) {
@@ -101,10 +123,12 @@ void process_request(int client, int epoll_fd) {
     char buf[4096];
     
     count = read_all(client, buf);
-
-    printf("read all %s\n",buf);
     
-    echo(client, buf);
+    printf("read all %s\n",buf);
+
+    int remove = connect_remove("",80);
+    
+    handle_tcp(client,remote);
 }
 
 
@@ -113,7 +137,7 @@ void process_request(int client, int epoll_fd) {
 int main(int argc, char** argv) {
 
     //1.listen socket on port
-    int listen_sock = open_non_blocking_socket(9090);
+    int listen_sock = open_non_blocking_socket(10000);
 
     //2.fork load balance server
     fork_processes(2);
