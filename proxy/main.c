@@ -19,8 +19,11 @@ void handle_tcp(int client,int remote){
 
 
         while(1){
-        
-                if (select(2, &readset, NULL, NULL, NULL) < 0) {
+
+
+                int maxfd = client > remote ? client : remote;
+                
+                if (select(maxfd+1, &readset, NULL, NULL, NULL) < 0) {
                     perror("select");
                     return;
                 }
