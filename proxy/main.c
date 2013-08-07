@@ -15,8 +15,6 @@ void handle_tcp(int client,int remote){
         
         FD_SET(client, &readset);
         FD_SET(remote, &readset);
-        
-
 
         while(1){
 
@@ -97,12 +95,13 @@ void io_loop(int listen_sock, int epoll_fd) {
 int connect_remote(char *server,int port){
 
     int remote = socket(AF_INET, SOCK_STREAM, 0);
+    make_socket_non_blocking(remote);
 
-    //Co
     struct sockaddr_in sin;
     
     sin.sin_family = AF_INET;
     sin.sin_port = htons(9090);
+
     inet_pton(AF_INET,"10.103.13.18",&sin.sin_addr);
     
     if (connect(remote, (struct sockaddr*) &sin, sizeof(sin))) {
@@ -110,6 +109,7 @@ int connect_remote(char *server,int port){
         close(remote);
         return 1;
     }
+
     return remote;
 }
 
