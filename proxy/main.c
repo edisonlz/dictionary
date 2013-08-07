@@ -133,11 +133,11 @@ void process_request(int client, int epoll_fd) {
     p = strtok (buf, split);
     server = p;
     p = strtok(NULL, split);
-    port = atoi(*p);
+    port = atoi(p);
     
-    printf("server:%s,port:%s",server,port);
+    printf("server:%s,port:%d",server,port);
     
-    int remote = connect_remote(server, (int)*port);
+    int remote = connect_remote(server, port);
     
     handle_tcp(client , remote);
 }
