@@ -11,12 +11,12 @@ void handle_tcp(int client,int remote){
 
         fd_set readset;
 
-        FD_ZERO(&readset);
-        
-        FD_SET(client, &readset);
-        FD_SET(remote, &readset);
 
         while(1){
+
+                FD_ZERO(&readset);
+                FD_SET(client, &readset);
+                FD_SET(remote, &readset);
 
                 int maxfd = client > remote ? client+1 : remote+1;
 
