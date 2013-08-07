@@ -129,7 +129,7 @@ void process_request(int client, int epoll_fd) {
 int main(int argc, char** argv) {
 
     //1.listen socket on port
-    int listen_sock = open_non_blocking_socket(10000);
+    int listen_sock = open_non_blocking_socket(20000);
 
     //2.fork load balance server
     fork_processes(2);
