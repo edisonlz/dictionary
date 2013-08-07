@@ -102,9 +102,9 @@ int connect_remote(char *server,int port){
     struct sockaddr_in sin;
     
     sin.sin_family = AF_INET;
-    sin.sin_port = htons(9090);
+    sin.sin_port = htons(port);
 
-    inet_pton(AF_INET,"10.103.13.18",&sin.sin_addr);
+    inet_pton(AF_INET,server,&sin.sin_addr);
     
     if (connect(remote, (struct sockaddr*) &sin, sizeof(sin))) {
         perror("connect remote");
@@ -121,16 +121,13 @@ int connect_remote(char *server,int port){
 void process_request(int client, int epoll_fd) {
 
     ssize_t count;
-    char buf[4096];
-    
-    count = read_all(client, buf);
-    
-    printf("read all %s\n",buf);
-
+    char server[64];
+    count = read_all(client, server);
     char port[10];
-    
     count = read_all(client, port);
 
+    printf("server:%s,port:%s",server,port);
+    
     int remote = connect_remote(buf, (int)*port);
     
     handle_tcp(client , remote);
