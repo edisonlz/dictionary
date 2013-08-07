@@ -30,13 +30,13 @@ void handle_tcp(int client,int remote){
 
                     if (FD_ISSET(client, &readset)) {
                         read_all(client, buf);
-                        printf("client:%d,remore:%d, %s", client,remote,buf);
+                        printf("client:%d,remore:%d, %s\n", client,remote,buf);
                         send_all(remote, buf);
                         *buf = '\0';
                     }
-                    else if(FD_ISSET(remote, &readset)){
+                    if(FD_ISSET(remote, &readset)){
                         read_all(remote, buf);
-                        printf("remore:%d,client:%d, %s", remote, client, buf);
+                        printf("remore:%d,client:%d, %s\n", remote, client, buf);
                         send_all(client, buf);
                         *buf = '\0';
                     }
