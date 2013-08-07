@@ -43,12 +43,6 @@ void handle_tcp(int client,int remote){
                     printf("remore:%d,client:%d, %s\n", remote, client, buf);
                     send_all(client, buf);
                 }
-                
-                if(1){
-                    char buf[4096];
-                    read_all(remote, buf);
-                    printf("%s\n", buf);
-                }
 
         }
 }
