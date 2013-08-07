@@ -2,35 +2,6 @@
 #include "network.h"
 #include "process.h"
 
-/* for select */
-#include <sys/select.h>
-
-fd_set readset;
-
-void handle_tcp(int client,int remote){
-        FD_SET(client, &readset);
-        FD_SET(client, &remote);
-        while(1){
-        
-                if (select(client+1, &readset, NULL, NULL, NULL) < 0) {
-                    perror("select");
-                    return;
-                }
-
-//            r, w, e = select.select(fdset, [], [])
-//            print r
-//            if sock in r:
-//                d = sock.recv(4096)
-//                print "source", d
-//                if remote.send(d) <= 0: break
-//            if remote in r:
-//                d = remote.recv(4096)
-//                print "remote", d
-//                if sock.send(d) <= 0: break
-
-        }
-}
-
 
 
 void io_loop(int listen_sock, int epoll_fd) {
@@ -60,14 +31,11 @@ void io_loop(int listen_sock, int epoll_fd) {
                     
                 } else {
                     if (events & EPOLLIN) {
-
-                        printf("process request, sock_fd %d\n", epoll_fd);
                         process_request(epoll_events[i].data.fd, epoll_fd);
-                        
                     }
                     
                     if (events & EPOLLOUT) {
-                         printf("EPOLLOUT sock_fd: %d write\n",epoll_fd);
+                         //printf("EPOLLOUT sock_fd: %d write\n",epoll_fd);
                     }
                 }
             }
@@ -79,14 +47,16 @@ void io_loop(int listen_sock, int epoll_fd) {
 void echo(int client,char *buf){
 
     char *char_quit = "quit";
-    int quit = strcmp(buf, char_quit);
+    int quit = strncmp(buf, char_quit , 4);
+    
     printf("quit: %d \n",quit);
      
-    if(quit==0){
+    if(quit == 0){
         *buf = "quit!";
     }
+    
     send_all(client , buf);
-    if(quit==0){
+    if(quit == 0){
         close(client);
     }
 
@@ -101,8 +71,10 @@ void process_request(int client, int epoll_fd) {
     char buf[4096];
     
     count = read_all(client, buf);
-
+    
+    #ifdef DEBUG
     printf("read all %s\n",buf);
+    #endif
     
     echo(client, buf);
 }
