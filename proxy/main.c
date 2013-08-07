@@ -121,7 +121,7 @@ void process_request(int client, int epoll_fd) {
     char buf[64];
     count = read_all(client, buf);
 
-    const char * split = ":";
+    //const char * split = ":";
     
     char *server=NULL;
     char *sport=NULL;
