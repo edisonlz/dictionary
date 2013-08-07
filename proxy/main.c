@@ -18,12 +18,12 @@ void handle_tcp(int client,int remote){
 
         while(1){
 
-
                 int maxfd = client > remote ? client : remote;
 
-                int fd_num = select(maxfd+1, &readset, NULL, NULL, NULL);
+                int fd_num = select(1024, &readset, NULL, NULL, NULL);
 
                 printf("fd_num:%d \n",fd_num);
+                
                 if (fd_num < 0) {
                     perror("select");
                     return;
@@ -34,7 +34,7 @@ void handle_tcp(int client,int remote){
                 if (FD_ISSET(client, &readset)) {
                     char buf[4096];
                     read_all(client, buf);
-                    printf("maxfd:%d,client:%d,remore:%d, %s\n", maxfd,client,remote,buf);
+                    printf("maxfd:%d,client:%d,remote:%d, %s\n", maxfd,client,remote,buf);
                     send_all(remote, buf);
                 }
                 
@@ -98,7 +98,6 @@ void io_loop(int listen_sock, int epoll_fd) {
 int connect_remote(char *server,int port){
 
     int remote = socket(AF_INET, SOCK_STREAM, 0);
-
 
     struct sockaddr_in sin;
     
