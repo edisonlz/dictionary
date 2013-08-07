@@ -69,7 +69,7 @@ void accept_incoming(int listen_sock, int epoll_fd){
     
     make_socket_non_blocking(client);
     
-    ev.events = EPOLLIN | EPOLLOUT | EPOLLET;
+    ev.events = EPOLLIN | EPOLLOUT; //| EPOLLET
     ev.data.fd = client;
     if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, client, &ev) < 0) {
         fprintf(stderr, "epoll set insertion error: fd=%d", client);

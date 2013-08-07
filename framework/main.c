@@ -48,14 +48,14 @@ void echo(int client,char *buf){
 
     char *char_quit = "quit";
     int quit = strncmp(buf, char_quit , 4);
-    
-    printf("quit: %d \n",quit);
      
     if(quit == 0){
         *buf = "quit!";
     }
     
     send_all(client , buf);
+
+    /* quit */
     if(quit == 0){
         close(client);
     }
