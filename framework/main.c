@@ -50,7 +50,7 @@ void echo(int client,char *buf){
     int quit = strncmp(buf, char_quit , 4);
      
     if(quit == 0){
-        *buf = "quit!";
+        buf = "quit!";
     }
     
     send_all(client , buf);
