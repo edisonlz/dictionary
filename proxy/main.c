@@ -25,22 +25,22 @@ void handle_tcp(int client,int remote){
                     return;
                 }
                 
-                 /* Process all of the fds that are still set in readset */
-                for (int i=0; i < 2; i++) {
-
-                    if (FD_ISSET(client, &readset)) {
-                        read_all(client, buf);
-                        printf("client:%d,remore:%d, %s\n", client,remote,buf);
-                        send_all(remote, buf);
-                        *buf = '\0';
-                    }
-                    if(FD_ISSET(remote, &readset)){
-                        read_all(remote, buf);
-                        printf("remore:%d,client:%d, %s\n", remote, client, buf);
-                        send_all(client, buf);
-                        *buf = '\0';
-                    }
+                /* Process all of the fds that are still set in readset */
+                
+                if (FD_ISSET(client, &readset)) {
+                    read_all(client, buf);
+                    printf("client:%d,remore:%d, %s\n", client,remote,buf);
+                    send_all(remote, buf);
+                    *buf = '\0';
                 }
+                
+                if(FD_ISSET(remote, &readset)){
+                    read_all(remote, buf);
+                    printf("remore:%d,client:%d, %s\n", remote, client, buf);
+                    send_all(client, buf);
+                    *buf = '\0';
+                }
+
         }
 }
 
