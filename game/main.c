@@ -71,7 +71,7 @@ void process_request(int client, int epoll_fd) {
             return;
         }
 
-        if(!ready_fd_map[listen_sock]){
+        if(!ready_fd_map[connect_fd]){
             close(client);
             return;
         }
@@ -79,7 +79,7 @@ void process_request(int client, int epoll_fd) {
         fd_map[client] = connect_fd;
         fd_map[connect_fd] = client;
 
-        printf("register %d %d\n" , client , remote);
+        printf("register %d %d\n" , client , connect_fd);
 
 
     }else{
