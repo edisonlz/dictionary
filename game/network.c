@@ -60,7 +60,7 @@ int accept_incoming(int listen_sock, int epoll_fd){
     int client = accept(listen_sock,  (struct sockaddr *) &clientaddr, &clientlen);
     if(client < 0){
         perror("accept");
-        return;
+        return 0;
     }
 
 
