@@ -23,6 +23,8 @@ void io_loop(int listen_sock, int epoll_fd) {
             if (epoll_events[i].data.fd == listen_sock) {
 
                 accept_incoming(listen_sock, epoll_fd);
+
+                printf("connect fd %d",listen_sock);
                 ready_fd_map[listen_sock] = 1;
 
             }  else {
