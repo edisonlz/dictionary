@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     int listen_sock = open_non_blocking_socket(30000);
 
     //2.fork load balance server
-    fork_processes(2);
+    //fork_processes(2);
 
     //3. create epoll and register event
     int epoll_fd = epoll_start(listen_sock);
