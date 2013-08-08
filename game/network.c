@@ -63,9 +63,9 @@ void accept_incoming(int listen_sock, int epoll_fd){
         return;
     }
 
-    #ifdef DEBUG
-        printf("accept %s:%d, sock_fd is %d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port), conn_sock);
-    #endif
+
+    printf("accept client is %d\n",client );
+
     
     make_socket_non_blocking(client);
     

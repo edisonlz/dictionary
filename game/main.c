@@ -24,7 +24,6 @@ void io_loop(int listen_sock, int epoll_fd) {
 
                 accept_incoming(listen_sock, epoll_fd);
 
-                printf("connect fd %d",listen_sock);
                 ready_fd_map[listen_sock] = 1;
 
             }  else {
