@@ -51,7 +51,7 @@ int open_non_blocking_socket(int port) {
 }
 
 
-void accept_incoming(int listen_sock, int epoll_fd){
+int accept_incoming(int listen_sock, int epoll_fd){
 
     struct epoll_event ev;
     struct sockaddr_in clientaddr;
@@ -75,6 +75,7 @@ void accept_incoming(int listen_sock, int epoll_fd){
         fprintf(stderr, "epoll set insertion error: fd=%d", client);
         exit(EXIT_FAILURE);
     }
+    return client;
 }
 
 

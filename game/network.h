@@ -31,7 +31,7 @@ int epoll_start(int listen_sock);
 void make_socket_non_blocking(int sfd);
 int open_non_blocking_socket(int port);
 
-void accept_incoming(int listen_sock, int epoll_fd);
+int accept_incoming(int listen_sock, int epoll_fd);
 void close_and_clean(int fd);
 
 int read_all(int fd,char *buf);

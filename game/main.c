@@ -22,9 +22,9 @@ void io_loop(int listen_sock, int epoll_fd) {
             events = epoll_events[i].events;
             if (epoll_events[i].data.fd == listen_sock) {
 
-                accept_incoming(listen_sock, epoll_fd);
+                int client = accept_incoming(listen_sock, epoll_fd);
 
-                ready_fd_map[listen_sock] = 1;
+                ready_fd_map[client] = 1;
 
             }  else {
 
